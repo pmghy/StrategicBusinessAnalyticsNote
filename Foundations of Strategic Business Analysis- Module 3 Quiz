@@ -1,0 +1,125 @@
+Foundations of Strategic Business Analysis- Module 3 Quiz
+Reem Soliman
+November 8, 2017
+crdt=read.table('DATA_3.01_CREDIT.csv',sep=',',header=TRUE)
+Q1
+For the Credit Scoring dataset (DATA_3.01_CREDIT.csv): using the same specifications as the examples covered during the videos, which of the following claims is correct? (You can select multiple answers.)
+
+The regression predicts correctly 98.67% of the observations
+
+The variable education has a positive impact on the rating, everything else being equal
+
+The variable balance has a positive impact on the rating, everything else being equal
+
+The variable gender has a positive impact on the rating, everything else being equal
+
+Students have, everything else being equal, a weaker rating
+
+People with larger income have, everything else being equal, a better rating
+
+linreg=lm(Rating~ .,data=crdt)
+summary(linreg)
+## 
+## Call:
+## lm(formula = Rating ~ ., data = crdt)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -81.316 -10.820   4.875  16.588  43.501 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        140.881377   9.666167  14.575   <2e-16 ***
+## Income               2.094703   0.048118  43.533   <2e-16 ***
+## Cards               -0.762853   1.079874  -0.706   0.4805    
+## Age                  0.144603   0.085872   1.684   0.0933 .  
+## Education            0.179388   0.473743   0.379   0.7052    
+## GenderFemale         1.770375   2.917842   0.607   0.5445    
+## StudentYes         -98.804778   4.959789 -19.921   <2e-16 ***
+## MarriedYes           3.176873   3.005535   1.057   0.2914    
+## EthnicityAsian      -4.428289   4.006859  -1.105   0.2700    
+## EthnicityCaucasian  -1.250612   3.533864  -0.354   0.7237    
+## Balance              0.231363   0.003661  63.189   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 24.91 on 289 degrees of freedom
+## Multiple R-squared:  0.9736, Adjusted R-squared:  0.9727 
+## F-statistic:  1067 on 10 and 289 DF,  p-value: < 2.2e-16
+model Accuracy : %97.27, the significant variables are Income, Student, Balance
+
+Number 3, 5,6 selected
+
+Q2
+The answer is positive NS NS
+
+Q3
+linreg=lm(Rating~ Income+Cards+Married,data=crdt)
+summary(linreg)
+## 
+## Call:
+## lm(formula = Rating ~ Income + Cards + Married, data = crdt)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -173.92  -77.36   -0.61   85.98  181.53 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 165.2144    16.6412   9.928   <2e-16 ***
+## Income        3.4196     0.1637  20.896   <2e-16 ***
+## Cards         8.2699     4.0988   2.018   0.0445 *  
+## MarriedYes   11.8404    11.3387   1.044   0.2972    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 95.71 on 296 degrees of freedom
+## Multiple R-squared:  0.6016, Adjusted R-squared:  0.5975 
+## F-statistic:   149 on 3 and 296 DF,  p-value: < 2.2e-16
+The answer is D Positive Positive NS
+
+Q4
+datatot=read.table('DATA_3.02_HR2.csv', header = T,sep=',')
+logreg = glm(left ~ ., family=binomial(logit), data=datatot)
+
+cutoff=.5 # Cutoff to determine when P[leaving] should be considered as a leaver or not. Note you can play with it...
+
+sum((logreg$fitted.values<=cutoff)&(datatot$left==0))/sum(datatot$left==0) # Compute the percentage of correctly classified employees who stayed
+## [1] 0.9464
+sum((logreg$fitted.values>cutoff)&(datatot$left==1))/sum(datatot$left==1) # Compute the percentage of correctly classified employees who left
+## [1] 0.1905
+mean((logreg$fitted.values>cutoff)==(datatot$left==1)) # Compute the overall percentage of correctly classified employees
+## [1] 0.8204167
+The answer is 95 19 82
+
+Q5
+logreg = glm(formula = left ~ ., family = binomial(logit), data = datatot)
+summary(logreg)
+## 
+## Call:
+## glm(formula = left ~ ., family = binomial(logit), data = datatot)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.1727  -0.5410  -0.3535  -0.1994   3.0949  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -1.2412448  0.1601334  -7.751 9.09e-15 ***
+## S           -3.8163201  0.1207448 -31.607  < 2e-16 ***
+## LPE          0.5044011  0.1809102   2.788   0.0053 ** 
+## NP          -0.3591952  0.0264709 -13.569  < 2e-16 ***
+## ANH          0.0037840  0.0006237   6.067 1.30e-09 ***
+## TIC          0.6187913  0.0271161  22.820  < 2e-16 ***
+## Newborn     -1.4851023  0.1128772 -13.157  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 10813.5  on 11999  degrees of freedom
+## Residual deviance:  8508.9  on 11993  degrees of freedom
+## AIC: 8522.9
+## 
+## Number of Fisher Scoring iterations: 6
+The answer is B,C,D
